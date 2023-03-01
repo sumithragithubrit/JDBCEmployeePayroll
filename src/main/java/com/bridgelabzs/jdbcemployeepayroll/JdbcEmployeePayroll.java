@@ -1,23 +1,23 @@
 package com.bridgelabzs.jdbcemployeepayroll;
 import java.sql.*;
 
-    public class JdbcEmployeePayroll {
-        public static void main(String[] args) {
-            try {
-                // Load the MySQL JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
+public class JdbcEmployeePayroll {
+    public static void main(String[] args) {
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-                // Create a connection to the database
-                Connection conn = DriverManager.getConnection(
-                		"jdbc:mysql://localhost:3306/employee_Payroll_Service","root","Sumi@1234");
-
-                executeUpdateQuery(conn,"Update Employee set salary=7000000 where name='Soujanya'");
+            // Create a connection to the database
+            Connection conn = DriverManager.getConnection(
+            		"jdbc:mysql://localhost:3306/employee_Payroll_Service","root","Sumi@1234");
+                
 
                 // Create a statement
                 Statement stmt = conn.createStatement();
 
                 // Execute a query
-                ResultSet rs = stmt.executeQuery("Select * from Employee");
+                ResultSet rs = stmt.executeQuery("Select * from Employee where salary<7000000");
+
 
                 displayResultSet(rs);
 
@@ -47,7 +47,4 @@ import java.sql.*;
             System.out.println(result + " rows affected by the update query");
         }
 
-
-}
-
-
+    }
