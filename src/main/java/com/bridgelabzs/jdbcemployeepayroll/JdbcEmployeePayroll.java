@@ -10,41 +10,46 @@ public class JdbcEmployeePayroll {
             // Create a connection to the database
             Connection conn = DriverManager.getConnection(
             		"jdbc:mysql://localhost:3306/employee_Payroll_Service","root","Sumi@1234");
-                
+                        // Create a statement
+                        Statement stmt = conn.createStatement();
 
-                // Create a statement
-                Statement stmt = conn.createStatement();
+                        // Execute a query
+                        ResultSet rs = stmt.executeQuery("Select gender,sum(basic_pay) from employee_payroll group by gender");
+                        displayResultSet(rs);
 
-                // Execute a query
-                ResultSet rs = stmt.executeQuery("Select * from Employee where salary<7000000");
+                        rs = stmt.executeQuery("Select gender,avg(basic_pay) from employee_payroll group by gender");
+                        displayResultSet(rs);
 
+                        rs = stmt.executeQuery("Select gender,max(basic_pay) from employee_payroll group by gender");
+                        displayResultSet(rs);
 
-                displayResultSet(rs);
+                        rs = stmt.executeQuery("Select gender,min(basic_pay) from employee_payroll group by gender");
+                        displayResultSet(rs);
 
-                // Close the connection
-                conn.close();
+                        // Close the connection
+                        conn.close();
 
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        public static void displayResultSet(ResultSet rs) throws SQLException {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            while (rs.next()) {
-                for (int i = 1; i <= columnsNumber; i++) {
-                    if (i > 1) System.out.print(",  ");
-                    String columnValue = rs.getString(i);
-                    System.out.print(rsmd.getColumnName(i) + " " + columnValue);
+                    } catch (SQLException | ClassNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
-                System.out.println("");
+                public static void displayResultSet(ResultSet rs) throws SQLException {
+                    ResultSetMetaData rsmd = rs.getMetaData();
+                    int columnsNumber = rsmd.getColumnCount();
+                    while (rs.next()) {
+                        for (int i = 1; i <= columnsNumber; i++) {
+                            if (i > 1) System.out.print(",  ");
+                            String columnValue = rs.getString(i);
+                            System.out.print(rsmd.getColumnName(i) + " " + columnValue);
+                        }
+                        System.out.println("");
+                    }
+                }
+
+                public static void executeUpdateQuery(Connection conn, String query) throws SQLException {
+                    Statement stmt = conn.createStatement();
+                    int result = stmt.executeUpdate(query);
+                    System.out.println(result + " rows affected by the update query");
+                }
+
             }
-        }
-
-        public static void executeUpdateQuery(Connection conn, String query) throws SQLException {
-            Statement stmt = conn.createStatement();
-            int result = stmt.executeUpdate(query);
-            System.out.println(result + " rows affected by the update query");
-        }
-
-    }
